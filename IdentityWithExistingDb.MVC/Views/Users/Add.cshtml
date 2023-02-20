@@ -1,0 +1,117 @@
+﻿@model AddUserViewModel
+
+@{
+    ViewData["Title"] = "New User";
+}
+
+<h1 class="text-center m-5 display-4">@ViewData["Title"] <i class="fa-solid fa-user-plus"></i></h1>
+
+<br class="mt-5" />
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Add" method="post">
+            <div class="row">
+                <div asp-validation-summary="ModelOnly" class="text-danger col-md-8"></div>
+            </div>
+
+            <div class="row m-4">
+                <div class="form-floating col-md-4">
+                    <input asp-for="FirstName" class="form-control" aria-required="true" />
+                    <label asp-for="FirstName"></label>
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating col-md-4">
+                    <input asp-for="LastName" class="form-control" aria-required="true" />
+                    <label asp-for="LastName"></label>
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating col-md-4">
+                    <input asp-for="Age" class="form-control" aria-required="true" />
+                    <label asp-for="Age"></label>
+                    <span asp-validation-for="Age" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row m-4">
+                <div class="form-floating col-md-4">
+                    <input asp-for="Email" class="form-control" aria-required="true" />
+                    <label asp-for="Email"></label>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating col-md-4">
+                    <input asp-for="Username" class="form-control" aria-required="true" />
+                    <label asp-for="Username"></label>
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating col-md-4">
+                    <input asp-for="PhoneNumber" class="form-control" aria-required="true" />
+                    <label asp-for="PhoneNumber"></label>
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row m-4">
+                <div class="form-floating col-md-4">
+                    <input asp-for="Password" class="form-control" aria-required="true" />
+                    <label asp-for="Password"></label>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating col-md-4">
+                    <input asp-for="ConfirmPassword" class="form-control" aria-required="true" />
+                    <label asp-for="ConfirmPassword"></label>
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+            </div>
+
+            <br class="m-5" />
+
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <label asp-for="Roles" class="form-label rolesLabel"></label>
+                </div>
+                <div class="col-md-12 text-center">
+                    <span asp-validation-for="Roles" class="text-danger"></span>
+                </div>
+
+            </div>
+
+
+            <div class="row m-4">
+                <div class="col-md-12 text-center">
+                    @for (int i = 0; i < Model.Roles.Count; i++)
+                    {
+                        <div class="form-check-inline">
+                            <input type="hidden" asp-for="Roles[i].Value" />
+                            <input type="hidden" asp-for="Roles[i].DisplayName" />
+                            <input class="form-check-input" type="checkbox" asp-for="Roles[i].IsChecked">
+                            <label class="form-check-label">
+                                @(Model.Roles[i].DisplayName)
+                            </label>
+                        </div>
+                    }
+
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+            </div>
+
+            <br class="mt-5" />
+
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="form-floating col-md-4">
+                    <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-outline-success mt-2">Register</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

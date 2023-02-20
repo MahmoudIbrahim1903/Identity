@@ -1,0 +1,127 @@
+﻿@model List<UsersViewModel>
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+<br class="m-5" />
+
+<div class="text-center mt-5">
+    <h1 class="display-4"><i class="fa-solid fa-user-group"></i> Users</h1>
+</div>
+
+<br class="m-5" />
+
+<a asp-controller="Users" asp-action="Add" class="btn btn-lg btn-outline-primary"><i class="fa-solid fa-plus"></i></a>
+
+<table class="table table-hover table-bordered text-center mt-4">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Age</th>
+            <th>Phone Number</th>
+            <th>Userame</th>
+            <th>Email</th>
+            <th>Roles</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            <tr>
+                <td>@(i+1)</td>
+                <td>@Model[i].FirstName</td>
+                <td>@Model[i].LastName</td>
+                <td>@Model[i].Age</td>
+                <td>@Model[i].PhoneNumber</td>
+                <td>@Model[i].Username</td>
+                <td>@Model[i].Email</td>
+                <td>@string.Join(", ", Model[i].Roles)</td>
+                <td>
+                    <a asp-controller="Users" asp-action="Update" asp-route-userId="@Model[i].UserId" class="pe-2"><i class="fa-solid fa-pencil"></i></a>
+                    |
+                    <a href="javascrirpt:;" class="btnDelete" data-userid="@Model[i].UserId"><i class="fa-solid fa-trash-can text-danger ps-2"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+    <script>
+        $(document).ready(function()
+            {
+                $(".btnDelete").on('click', function(){
+                    var btn = $(this);
+
+
+                    swal({
+                        title: "Delete User?",
+                        text: "Once deleted, you will not be able to undo this action!",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    })
+                        .then((willDelete) => {
+                            if (willDelete) {
+                                $.ajax({
+                                    url: '/api/Users?userId=' + btn.data('userid'),
+                                    method: 'DELETE',
+
+                                    success: function () {
+                                        swal({ icon: "success", });
+                                        btn.parents('tr').fadeOut();
+                                    },
+
+                                    error: function () {
+                                        swal("Oops", "Something went wrong!", "error");
+                                    }
+                                });
+
+                                }
+                        });
+
+                        
+                });
+            }
+        );
+
+
+        function showConfirmationPopup(btn) {
+            
+                var result = confirm("Are you sure?!");
+
+                if(result){
+                    console.log(btn.data('userid'));
+                }
+                if(!result){
+                    console.log("He rellod back his decision");
+                }
+
+                console.log('Done ya broooooooooooo!');
+
+                bootbox.confirm({
+                title: 'Delete User?',
+                message: 'Are you sure you want delete this user? This cannot be undone.',
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancel'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> Confirm'
+                    }
+                },
+                callback: function (result) {
+                    if(result)
+                        console.log(btn.data('userid'));
+                    if(!result)
+                        console.log("He refused to confirm");                        
+                }
+            });
+
+        };
+    </script>
+}                

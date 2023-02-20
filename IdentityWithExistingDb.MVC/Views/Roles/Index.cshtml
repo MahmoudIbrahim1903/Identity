@@ -1,0 +1,88 @@
+﻿@model List<IdentityRole>
+
+@{
+    ViewData["Title"] = "Roles";
+}
+
+<br class="m-5" />
+
+<div class="text-center mt-5">
+    <h1 class="display-4"><i class="fa-solid fa-scale-balanced"></i> Roles</h1>
+</div>
+
+<br class="m-5" />
+
+<partial name="_RoleFormPartial" model="new RoleFormViewModel()"></partial>
+
+<table class = "table table-hover table-bordered text-center mt-4">
+    <thead>
+        <tr >
+            <th>#</th>
+            <th>Role Name</th>
+            <th>Role Id</th>
+            <th></>
+        </tr>
+    </thead>
+    <tbody>
+        @for(int i = 0; i < Model.Count; i++)
+        {
+            <tr>
+                <td>@(i+1)</td>
+                <td>@Model[i].Name</td>
+                <td>@Model[i].Id</td>
+                <td>
+                    @*<a asp-controller="Roles" asp-action="Update" asp-route-roleId="@Model[i].Id" class="pe-2"><i class="fa-solid fa-pencil"></i></a>
+                    |*@
+                    <a href="javascrirpt:;" class="btnDelete" data-roleid="@Model[i].Id"><i class="fa-solid fa-trash-can text-danger ps-2"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+
+    <script>
+        $(document).ready(function () {
+            $(".btnDelete").on('click', function () {
+                var btn = $(this);
+
+
+                swal({
+                    title: "Delete Role?",
+                    text: "Once deleted, you will not be able to undo this action!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            $.ajax({
+                                url: '/api/Roles?roleId=' + btn.data('roleid'),
+                                method: 'DELETE',
+
+                                success: function () {
+                                    swal({ icon: "success", });
+                                    btn.parents('tr').fadeOut();
+                                },
+
+                                error: function () {
+                                    swal("Oops", "Something went wrong!", "error");
+                                }
+                            });
+
+                        }
+                    });
+
+
+            });
+        }
+        );
+
+    </script>
+
+
+
+}
